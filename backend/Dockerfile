@@ -6,4 +6,3 @@ ADD requirements.txt /tancho/
 WORKDIR /tancho
 
 RUN pip install -r requirements.txt
-
