@@ -1,16 +1,24 @@
 from fastapi import FastAPI
+from pets.routes import pets_router
+from config import config
 
-
+DB_CLIENT = DB = None
 app = FastAPI()
 
 
-@app.get("/pets/")
-async def get_all_pets():
-    """[summary]
-    Gets all pets adopted/rescued or not.
+app.include_router(
+    pets_router,
+    prefix="/pets",
+    tags=["pets"],
+    responses={404: {"description": "Not found"}},
+)
 
-    [description]
-    Endpoint for all pets.
-    """
-    fake_pets = [{"name": "Guero"}, {"name": "Pepita"}]
-    return fake_pets
+
+@app.on_event("startup")
+async def app_startup():
+    pass
+
+
+@app.on_event("shutdown")
+async def app_shutdown():
+    config.close_db_client(DB_CLIENT)
