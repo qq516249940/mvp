@@ -1,5 +1,7 @@
-import yaml
+# backend/tancho/config/config.yml
+
 from motor.motor_asyncio import AsyncIOMotorClient
+import yaml
 
 
 def load_config() -> dict:

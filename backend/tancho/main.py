@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from pets.routes import pets_router
 from config import config
 
-DB_CLIENT = DB = None
 app = FastAPI()
 
 
@@ -16,9 +15,17 @@ app.include_router(
 
 @app.on_event("startup")
 async def app_startup():
-    pass
+    """
+    Do tasks related to app initialization.
+    """
+    # This if fact does nothing its just an example.
+    config.load_config()
 
 
 @app.on_event("shutdown")
 async def app_shutdown():
-    config.close_db_client(DB_CLIENT)
+    """
+    Do tasks related to app termination.
+    """
+    # This does finish the DB driver connection.
+    config.close_db_client()
