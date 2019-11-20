@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 import logging
 
-from .models import PetBase, PetOnDB
+from .models import PetBase, PetOnDB, PetKind
 
 
 pets_router = APIRouter()
@@ -37,15 +37,18 @@ def fix_pet_id(pet):
 
 
 @pets_router.get("/", response_model=List[PetOnDB])
-async def get_all_pets():
+async def get_all_pets(kind: PetKind = None, limit: int = 10, skip: int = 0):
     """[summary]
     Gets all pets.
 
     [description]
     Endpoint to retrieve pets.
     """
-    pets_cursor = DB.pet.find()
-    pets = await pets_cursor.to_list(length=10)
+    if kind is None:
+        pets_cursor = DB.pet.find().skip(skip).limit(limit)
+    else:
+        pets_cursor = DB.pet.find({"kind": kind.value}).skip(skip).limit(limit)
+    pets = await pets_cursor.to_list(length=limit)
     return list(map(fix_pet_id, pets))
 
 
