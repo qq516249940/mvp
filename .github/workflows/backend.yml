@@ -29,5 +29,6 @@ jobs:
       run: |
         pip install pytest
         cd backend
-        sudo docker run --name mongo -d -p 27017:27017 mongo
+        export MONGO_INITDB_ROOT_USERNAME=tancho MONGO_INITDB_ROOT_PASSWORD=4dm1n4dm1n
+        sudo docker run --name mongo -d -p 27017:27017 mongo -e MONGO_INITDB_ROOT_USERNAME -e MONGO_INITDB_ROOT_PASSWORD
         python -m pytest
