@@ -57,9 +57,9 @@ class PetOnDB(PetBase):
     [description]
     Extends:
         PetBase
-    Adds `_id` field.
+    Adds `id_` field.
 
     Variables:
-        _id: str {[ObjectId]} -- [id at DB]
+        id_: str {[ObjectId]} -- [id at DB]
     """
     id_: str

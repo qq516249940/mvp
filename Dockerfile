@@ -2,7 +2,7 @@ FROM python:3.8
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-ADD /tancho /tancho/
+ADD /backend /tancho/
 ADD requirements.txt /tancho/
 WORKDIR /tancho
 
