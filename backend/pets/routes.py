@@ -26,14 +26,19 @@ async def _get_pet_or_404(id_: str):
     _id = validate_object_id(id_)
     pet = await DB.pet.find_one({"_id": _id})
     if pet:
-        return pet
+        return fix_pet_id(pet)
     else:
         raise HTTPException(status_code=404, detail="Pet not found")
 
 
 def fix_pet_id(pet):
-    pet["id_"] = str(pet["_id"])
-    return pet
+    if pet.get("_id", False):
+        pet["id_"] = str(pet["_id"])
+        return pet
+    else:
+        raise ValueError(
+            f"No `_id` found! Unable to fix pet ID for pet: {pet}"
+        )
 
 
 @pets_router.get("/", response_model=List[PetOnDB])
