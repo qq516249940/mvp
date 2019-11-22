@@ -26,8 +26,8 @@ def _get_client_config():
         client_conf = {
             "host": conf.get(
                 "databases", {}).get("default", {}).get("HOST"),
-            "port": conf.get(
-                "databases", {}).get("default", {}).get("PORT"),
+            "port": int(conf.get(
+                "databases", {}).get("default", {}).get("PORT")),
             "username": conf.get(
                 "databases", {}).get("default", {}).get("USER"),
             "password": conf.get(
@@ -37,8 +37,8 @@ def _get_client_config():
         client_conf = {
             "host": conf.get(
                 "databases", {}).get("default", {}).get("HOST"),
-            "port": conf.get(
-                "databases", {}).get("default", {}).get("PORT"),
+            "port": int(conf.get(
+                "databases", {}).get("default", {}).get("PORT")),
         }
     return client_conf
 
