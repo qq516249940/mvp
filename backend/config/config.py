@@ -17,30 +17,36 @@ def load_config() -> dict:
 
 CONF = load_config()
 
-if CONF.get("databases", {}).get("default", {}).get("USER", False) and\
-        CONF.get("databases", {}).get("default", {}).get("PASSWORD", False):
-    client_conf = {
-        "host": CONF.get(
-            "databases", {}).get("default", {}).get("HOST", "127.0.0.1"),
-        "port": CONF.get(
-            "databases", {}).get("default", {}).get("PORT", 27017),
-        "username": CONF.get(
-            "databases", {}).get("default", {}).get("USER", ""),
-        "password": CONF.get(
-            "databases", {}).get("default", {}).get("PASSWORD", ""),
-    }
-else:
-    client_conf = {
-        "host": CONF.get(
-            "databases", {}).get("default", {}).get("HOST", "127.0.0.1"),
-        "port": CONF.get(
-            "databases", {}).get("default", {}).get("PORT", 27017),
-    }
 
-DB_CLIENT = AsyncIOMotorClient(**client_conf)
+def _get_client_config():
+    conf = CONF
+    if conf.get("databases", {}).get("default", {}).get("USER", False) and\
+            conf.get("databases", {}).get("default", {}).get(
+                "PASSWORD", False):
+        client_conf = {
+            "host": conf.get(
+                "databases", {}).get("default", {}).get("HOST"),
+            "port": conf.get(
+                "databases", {}).get("default", {}).get("PORT"),
+            "username": conf.get(
+                "databases", {}).get("default", {}).get("USER"),
+            "password": conf.get(
+                "databases", {}).get("default", {}).get("PASSWORD"),
+        }
+    else:
+        client_conf = {
+            "host": conf.get(
+                "databases", {}).get("default", {}).get("HOST"),
+            "port": conf.get(
+                "databases", {}).get("default", {}).get("PORT"),
+        }
+    return client_conf
+
+
+DB_CLIENT = AsyncIOMotorClient(**_get_client_config())
 
 DB = DB_CLIENT[
-    CONF.get("databases", {}).get("default", {}).get("NAME", "test_db")
+    CONF.get("databases", {}).get("default", {}).get("NAME")
 ]
 
 
