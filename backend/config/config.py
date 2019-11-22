@@ -5,21 +5,43 @@ import yaml
 
 
 def load_config() -> dict:
-    with open('config/config.yml') as yaml_file:
-        conf = yaml.load(yaml_file.read(), Loader=yaml.SafeLoader)
+    conf = {}
+    try:
+        with open('config/config.yml') as yaml_file:
+            conf = yaml.load(yaml_file.read(), Loader=yaml.SafeLoader)
+    except FileNotFoundError:
+        with open('config/config.ci.yml') as yaml_file:
+            conf = yaml.load(yaml_file.read(), Loader=yaml.SafeLoader)
     return conf
 
 
 CONF = load_config()
 
-DB_CLIENT = AsyncIOMotorClient(
-    host=CONF.get("databases", {}).get("default", {}).get("HOST", ""),
-    port=CONF.get("databases", {}).get("default", {}).get("PORT", 0),
-    username=CONF.get("databases", {}).get("default", {}).get("USER", ""),
-    password=CONF.get("databases", {}).get("default", {}).get("PASSWORD", ""),
-)
+if CONF.get("databases", {}).get("default", {}).get("USER", False) and\
+        CONF.get("databases", {}).get("default", {}).get("PASSWORD", False):
+    client_conf = {
+        "host": CONF.get(
+            "databases", {}).get("default", {}).get("HOST", "127.0.0.1"),
+        "port": CONF.get(
+            "databases", {}).get("default", {}).get("PORT", 27017),
+        "username": CONF.get(
+            "databases", {}).get("default", {}).get("USER", ""),
+        "password": CONF.get(
+            "databases", {}).get("default", {}).get("PASSWORD", ""),
+    }
+else:
+    client_conf = {
+        "host": CONF.get(
+            "databases", {}).get("default", {}).get("HOST", "127.0.0.1"),
+        "port": CONF.get(
+            "databases", {}).get("default", {}).get("PORT", 27017),
+    }
 
-DB = DB_CLIENT[CONF.get("databases", {}).get("default", {}).get("NAME")]
+DB_CLIENT = AsyncIOMotorClient(**client_conf)
+
+DB = DB_CLIENT[
+    CONF.get("databases", {}).get("default", {}).get("NAME", "test_db")
+]
 
 
 def close_db_client():
