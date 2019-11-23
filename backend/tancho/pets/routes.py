@@ -26,7 +26,7 @@ async def _get_pet_or_404(id_: str):
     _id = validate_object_id(id_)
     pet = await DB.pet.find_one({"_id": _id})
     if pet:
-        return pet
+        return fix_pet_id(pet)
     else:
         raise HTTPException(status_code=404, detail="Pet not found")
 
