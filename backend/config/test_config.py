@@ -7,8 +7,6 @@ def test_config():
     conf_values = [
         "HOST",
         "PORT",
-        "USER",
-        "PASSWORD",
         "NAME",
     ]
     for value in conf_values:
