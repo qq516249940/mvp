@@ -1,0 +1,12 @@
+# update configuration and save a copy as config.yml in same directory
+
+fastapi:
+  debug: true
+
+databases:
+  default:
+    ENGINE: 'mongodb'
+    DRIVER: 'motor'
+    NAME: 'tancho_test_db'
+    HOST: '127.0.0.1'
+    PORT: '27017'
