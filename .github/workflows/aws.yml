@@ -71,7 +71,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: aws/task-def-backend.json
-        container-name: tancho
+        container-name: sample-fargate-app
         image: ${{ steps.build-image.outputs.image }}
 
     - name: Deploy Amazon ECS task definition
