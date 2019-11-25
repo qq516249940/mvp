@@ -24,7 +24,15 @@
             ],
             "command": [
                 "/bin/sh -c \"cd /tancho && uvicorn main:app --host 0.0.0.0 --port 80\""
-            ]
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/tancho-task",
+                    "awslogs-region": "us-west-2",
+                    "awslogs-stream-prefix": "tancho-"
+                }
+            },
         },
         {
             "name": "mongo",
