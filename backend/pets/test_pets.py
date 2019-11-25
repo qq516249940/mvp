@@ -27,7 +27,7 @@ def _insert_pet():
 
 def test_add_a_pets():
     response = _insert_pet()
-    assert response.status_code == 200, "Not able to ADD a new pet"
+    assert response.status_code == 201, "Not able to ADD a new pet"
 
 
 def test_get_all_pets():

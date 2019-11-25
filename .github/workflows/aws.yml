@@ -71,13 +71,13 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: aws/task-def-backend.json
-        container-name: sample-fargate-app
+        container-name: tancho
         image: ${{ steps.build-image.outputs.image }}
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: fargate-service
-        cluster: default
+        service: tancho-service
+        cluster: rescaty
         wait-for-service-stability: true

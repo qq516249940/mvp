@@ -1,47 +1,19 @@
 {
-    "family": "sample-fargate",
+    "family": "tancho-task",
     "networkMode": "awsvpc",
     "volumes": [
         {
-            "name": "mongo_data",
-            "host": {}
+            "name": "mongo-data"
         }
     ],
     "containerDefinitions": [
-        {
-         "command": [
-            "/bin/sh -c \"echo '<html> <head> <title>Amazon ECS Sample App</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>Amazon ECS Sample App</h1> <h2>Congratulations!</h2> <p>Your application is now running on a container in Amazon ECS.</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
-         ],
-         "entryPoint": [
-            "sh",
-            "-c"
-         ],
-         "essential": true,
-         "image": "httpd:2.4",
-         "logConfiguration": {
-            "logDriver": "awslogs",
-            "options": {
-               "awslogs-group" : "/ecs/fargate-task-definition",
-               "awslogs-region": "us-east-1",
-               "awslogs-stream-prefix": "ecs"
-            }
-         },
-         "name": "sample-fargate-app",
-         "portMappings": [
-            {
-               "containerPort": 80,
-               "hostPort": 80,
-               "protocol": "tcp"
-            }
-         ]
-        },
         {
             "name": "tancho",
             "image": "python:3.8",
             "portMappings": [
                 {
-                    "containerPort": 8000,
-                    "hostPort": 8000,
+                    "containerPort": 80,
+                    "hostPort": 80,
                     "protocol": "tcp"
                 }
             ],
@@ -52,14 +24,22 @@
             ],
             "command": [
                 "/bin/sh -c \"cd /tancho && uvicorn main:app --host 0.0.0.0 --port 80\""
-            ]
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/tancho-task",
+                    "awslogs-region": "us-west-2",
+                    "awslogs-stream-prefix": "tancho-"
+                }
+            }
         },
         {
             "name": "mongo",
             "image": "mongo",
             "mountPoints": [
               {
-                "sourceVolume": "mongo_data",
+                "sourceVolume": "mongo-data",
                 "containerPath": "/data/db"
               }
             ],

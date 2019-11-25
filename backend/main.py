@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+
+from core.routes import core_router
 from pets.routes import pets_router
 from config import config
 
@@ -9,6 +11,12 @@ app.include_router(
     pets_router,
     prefix="/pets",
     tags=["pets"],
+    responses={404: {"description": "Not found"}},
+)
+
+app.include_router(
+    core_router,
+    tags=["core"],
     responses={404: {"description": "Not found"}},
 )
 
