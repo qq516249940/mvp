@@ -1,9 +1,11 @@
-# backend/tancho/pets/routes.py
+# backend/pets/routes.py
 
 from bson.objectid import ObjectId
 from config.config import DB, CONF
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
+from starlette.status import HTTP_201_CREATED
+
 import logging
 
 from .models import PetBase, PetOnDB, PetKind
@@ -57,7 +59,7 @@ async def get_all_pets(kind: PetKind = None, limit: int = 10, skip: int = 0):
     return list(map(fix_pet_id, pets))
 
 
-@pets_router.post("/", response_model=PetOnDB)
+@pets_router.post("/", response_model=PetOnDB, status_code=HTTP_201_CREATED)
 async def add_pet(pet: PetBase):
     """[summary]
     Inserts a new pet on the DB.
