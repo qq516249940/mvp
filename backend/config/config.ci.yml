@@ -3,10 +3,17 @@
 fastapi:
   debug: true
 
+api:
+  versions:
+    current: v1
+    supported:
+    deprecated:
+    unsupported:
+
 databases:
   default:
     ENGINE: 'mongodb'
     DRIVER: 'motor'
-    NAME: 'tancho_test_db'
+    NAME: 'tancho_ci_db'
     HOST: '127.0.0.1'
     PORT: '27017'

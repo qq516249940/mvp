@@ -4,9 +4,9 @@ volumes:
     mongo_data:
 
 services:
-  # Our main app
+  # Our main app tancho==backend
   tancho:
-    build: .
+    build: ./backend/
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
       - ./backend:/tancho

@@ -1,14 +1,33 @@
 from fastapi import FastAPI
+
+from core.routes import core_router
 from pets.routes import pets_router
 from config import config
 
-app = FastAPI()
+api_path = f"/api/{config.API_VERSION}"
 
+app = FastAPI(
+    title="Rescaty",
+    description="""
+    App resemble a social network where a user can adopt
+    a pet and follow pets stories, and receive updates about it.
+    """,
+    version="0.1",
+    openapi_url=f"{api_path}/openapi.json",
+    docs_url=f"{api_path}/docs",
+    redoc_url=None
+)
 
 app.include_router(
     pets_router,
-    prefix="/pets",
+    prefix=f"{api_path}/pets",
     tags=["pets"],
+    responses={404: {"description": "Not found"}},
+)
+
+app.include_router(
+    core_router,
+    tags=["core"],
     responses={404: {"description": "Not found"}},
 )
 
