@@ -1,18 +1,31 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <section class="animated fadeIn">
+        <NavBar/>
+        <div class="container">
+            <div class="columns is-mobile">
+                <div class="column is-4 is-offset-4">
+                    <figure class="">
+                        <img src="../assets/logo_transparent.png">
+                    </figure>
+                </div>
+            </div>
+            <PetsResume/>
+        </div>
+        <Footer/>
+    </section>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import NavBar from '@/components/NavBar.vue';
+import PetsResume from '@/components/PetsResume.vue';
+import Footer from '@/components/Footer.vue';
 
 export default {
-  name: 'home',
   components: {
-    HelloWorld,
+    NavBar,
+    PetsResume,
+    Footer,
   },
 };
 </script>
