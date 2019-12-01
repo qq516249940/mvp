@@ -1,10 +1,10 @@
 version: '3.1'
 
 volumes:
-    mongo_data:
+  mongo_data:
 
 services:
-  # Our main app tancho==backend
+  # Tancho is the codename for Backend
   tancho:
     build: ./backend/
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
@@ -13,7 +13,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-        - mongo
+      - mongo
 
   # MongoDB as a service
   mongo:
@@ -23,6 +23,6 @@ services:
       MONGO_INITDB_ROOT_USERNAME: "tancho"
       MONGO_INITDB_ROOT_PASSWORD: "4dm1n4dm1n"
     volumes:
-        - mongo_data:/data/db
+      - mongo_data:/data/db
     ports:
       - "27017:27017"
