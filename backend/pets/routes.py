@@ -8,7 +8,7 @@ from starlette.status import HTTP_201_CREATED
 
 import logging
 
-from .models import PetBase, PetOnDB, PetKind
+from .models import PetBase, PetOnDB, PetsOut, PetKind, PetStatus
 
 
 pets_router = APIRouter()
@@ -43,20 +43,40 @@ def fix_pet_id(pet):
         )
 
 
-@pets_router.get("/", response_model=List[PetOnDB])
-async def get_all_pets(kind: PetKind = None, limit: int = 10, skip: int = 0):
+@pets_router.get(
+    "/",
+    response_model=PetsOut,
+)
+async def get_all_pets(
+    kind: PetKind = None,
+    status: PetStatus = None,
+    limit: int = 10,
+    skip: int = 0
+):
     """[summary]
     Gets all pets.
 
     [description]
     Endpoint to retrieve pets.
     """
-    if kind is None:
-        pets_cursor = DB.pet.find().skip(skip).limit(limit)
-    else:
-        pets_cursor = DB.pet.find({"kind": kind.value}).skip(skip).limit(limit)
+    if skip < 0:
+        skip = 0
+    if limit <= 0:
+        limit = 10
+
+    filter_db = {}
+    if status and kind:
+        filter_db = {"status": status.value, "kind": kind.value}
+    elif status:
+        filter_db = {"status": status.value}
+    elif kind:
+        filter_db = {"kind": kind.value}
+    pets_cursor = DB.pet.find(filter_db).skip(skip).limit(limit)
+    pets_count = await DB.pet.count_documents(filter_db)
     pets = await pets_cursor.to_list(length=limit)
-    return list(map(fix_pet_id, pets))
+    pets_list = list(map(fix_pet_id, pets))
+    print(pets_count)
+    return {"pets": pets_list, "count": pets_count}
 
 
 @pets_router.post("/", response_model=PetOnDB, status_code=HTTP_201_CREATED)
