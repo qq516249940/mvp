@@ -16,6 +16,7 @@ class PetState(str, Enum):
     critical = "Critical"
     bad = "Bad"
     good = "Good"
+    healthy = "Healthy"
 
 
 class PetKind(str, Enum):
@@ -54,14 +55,13 @@ class PetBase(BaseModel):
         BaseModel {[type]} -- [description]
     """
     kind: PetKind
-    states: List[PetState]
-    location: str
-    picture: Optional[str] = None
-    rescued: bool = False
-    adopted: bool = False
-    in_temp_house: bool = False
-    ready_for_adoption: bool = False
+    status: PetStatus
+    story: str
     name: Optional[str] = None
+    location: str
+    states: List[PetState] = []
+    picture: Optional[str] = None
+    in_temp_house: bool = False
 
 
 class PetOnDB(PetBase):
