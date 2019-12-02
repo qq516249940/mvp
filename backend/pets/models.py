@@ -77,3 +77,15 @@ class PetOnDB(PetBase):
         id_: str {[ObjectId]} -- [id at DB]
     """
     id_: str
+
+
+class PetsOut(BaseModel):
+    """[summary]
+
+    [description]
+
+    Extends:
+        PetOnDB
+    """
+    pets: List[PetOnDB]
+    count: int
