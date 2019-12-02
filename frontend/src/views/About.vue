@@ -25,10 +25,10 @@
                         <ul class="subtitle">
                             <li>Improve chances to find missing pets.</li>
                             <li>Centralize bad actors.</li>
-                            <li>Improve pet adoption by automate and centralize tasks e.g. fill
+                            <li>Improve pet adoption by automate and centralize tasks e.g. Fill
                                 forms, take id pictures, etc.</li>
                             <li>Improve pet adoption and follow-up.</li>
-                            <li>Avoid fraud on raising money for rescue pets.</li>
+                            <li>Avoid fraud on raising money for pet rescue and support.</li>
                         </ul>
                     </article>
                 </div>
