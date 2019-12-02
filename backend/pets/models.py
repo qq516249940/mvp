@@ -29,6 +29,20 @@ class PetKind(str, Enum):
     cat = "Cat"
 
 
+class PetStatus(str, Enum):
+    """[summary]
+        Used to manage report found or missing pets.
+
+    [description]
+        Simple enumeration to link the status of a pet.
+    """
+    missing = "Missing"
+    found = "Found"
+    adoption = "Adoption"
+    adopted = "Adopted"
+    rescued = "Rescued"
+
+
 class PetBase(BaseModel):
     """[summary]
         Base pet abstraction model.
