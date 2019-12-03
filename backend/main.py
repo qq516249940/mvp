@@ -34,6 +34,8 @@ app.include_router(
 if config.CONF.get('fastapi', {}).get('debug', False):
     from starlette.middleware.cors import CORSMiddleware
     origins = [
+        "http://tancho",
+        "http://tancho:8080",
         "http://localhost",
         "http://localhost:8080",
     ]
