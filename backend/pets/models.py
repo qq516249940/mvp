@@ -11,12 +11,12 @@ class PetState(str, Enum):
     [description]
         Simple enumeration to link the pets state.
     """
-    injured = "Injured"
-    underfed = "Underfed"
-    critical = "Critical"
-    bad = "Bad"
-    good = "Good"
-    healthy = "Healthy"
+    injured = "injured"
+    underfed = "underfed"
+    critical = "critical"
+    bad = "bad"
+    good = "good"
+    healthy = "healthy"
 
 
 class PetKind(str, Enum):
@@ -26,8 +26,8 @@ class PetKind(str, Enum):
     [description]
         Simple enumeration to link the kind of a pet.
     """
-    dog = "Dog"
-    cat = "Cat"
+    dog = "dog"
+    cat = "cat"
 
 
 class PetStatus(str, Enum):
@@ -37,11 +37,11 @@ class PetStatus(str, Enum):
     [description]
         Simple enumeration to link the status of a pet.
     """
-    missing = "Missing"
-    found = "Found"
-    adoption = "Adoption"
-    adopted = "Adopted"
-    rescued = "Rescued"
+    missing = "missing"
+    found = "found"
+    adoption = "adoption"
+    adopted = "adopted"
+    rescued = "rescued"
 
 
 class PetBase(BaseModel):
