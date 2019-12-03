@@ -6,14 +6,16 @@ client = TestClient(pets_router)
 
 pets_ids = []
 pet_guero = {
-    "kind": "Dog",
-    "states": [
-        "Bad",
-        "Underfed",
-        "Injured"
-    ],
-    "location": "fake st. 123, Springfield, California",
+    "kind": "dog",
+    "status": "found",
+    "story": "The cool dog!",
     "name": "Guero",
+    "location": "fake st. 123, Springfield, California",
+    "states": [
+        "bad",
+        "underfed",
+        "injured"
+    ],
 }
 
 
