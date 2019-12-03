@@ -3,6 +3,7 @@
 from enum import Enum
 from pydantic import BaseModel
 from typing import List, Optional
+from datetime import datetime
 
 
 class PetState(str, Enum):
@@ -77,6 +78,8 @@ class PetOnDB(PetBase):
         id_: str {[ObjectId]} -- [id at DB]
     """
     id_: str
+    created_at: datetime
+    last_modified: datetime
 
 
 class PetsOut(BaseModel):
