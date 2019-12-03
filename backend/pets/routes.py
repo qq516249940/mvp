@@ -1,9 +1,9 @@
 # backend/pets/routes.py
 
 from bson.objectid import ObjectId
+from datetime import datetime
 from config.config import DB, CONF
 from fastapi import APIRouter, Depends, HTTPException
-from typing import List
 from starlette.status import HTTP_201_CREATED
 
 import logging
@@ -71,11 +71,13 @@ async def get_all_pets(
         filter_db = {"status": status.value}
     elif kind:
         filter_db = {"kind": kind.value}
-    pets_cursor = DB.pet.find(filter_db).skip(skip).limit(limit)
+    pets_cursor = DB.pet.find(filter_db)\
+        .skip(skip)\
+        .limit(limit)\
+        .sort("created_at", -1)
     pets_count = await DB.pet.count_documents(filter_db)
     pets = await pets_cursor.to_list(length=limit)
     pets_list = list(map(fix_pet_id, pets))
-    print(pets_count)
     return {"pets": pets_list, "count": pets_count}
 
 
@@ -87,7 +89,10 @@ async def add_pet(pet: PetBase):
     [description]
     Endpoint to add a new pet.
     """
-    pet_op = await DB.pet.insert_one(pet.dict())
+    date_now = datetime.utcnow().isoformat()
+    pet_data = pet.dict()
+    pet_data['last_modified'] = pet_data['created_at'] = date_now
+    pet_op = await DB.pet.insert_one(pet_data)
     if pet_op.inserted_id:
         pet = await _get_pet_or_404(pet_op.inserted_id)
         pet["id_"] = str(pet["_id"])
@@ -135,15 +140,17 @@ async def delete_pet_by_id(id_: str):
     dependencies=[Depends(validate_object_id), Depends(_get_pet_or_404)],
     response_model=PetOnDB
 )
-async def update_pet(id_: str, pet_data: PetBase):
+async def update_pet(id_: str, pet: PetBase):
     """[summary]
     Update a pet by ID.
 
     [description]
     Endpoint to update an specific pet with some or all fields.
     """
+    pet_data = pet.dict()
+    pet_data['last_modified'] = datetime.utcnow().isoformat()
     pet_op = await DB.pet.update_one(
-        {"_id": ObjectId(id_)}, {"$set": pet_data.dict()}
+        {"_id": ObjectId(id_)}, {"$set": pet_data}
     )
     if pet_op.modified_count:
         return await _get_pet_or_404(id_)
