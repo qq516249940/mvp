@@ -1,7 +1,7 @@
 <template>
-    <section class="animated fadeIn" id="about">
+    <section>
         <NavBar/>
-        <div class="columns is-mobile">
+        <div class="columns is-mobile animated fadeIn" id="about">
             <div class="column is-three-fifths is-offset-one-fifth">
                 <div class="tile is-parent">
                     <article class="tile is-child notification is-primary">
@@ -56,5 +56,4 @@ export default {
     margin-top: 40px;
     margin-bottom: 40px;
 }
-
 </style>

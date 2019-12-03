@@ -1,6 +1,6 @@
 const API = {
   protocol: 'http://',
-  host: 'tancho:8000',
+  host: 'localhost:8000',
   api: '/api/v1',
 };
 

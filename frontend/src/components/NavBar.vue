@@ -15,24 +15,17 @@
         <template slot="start">
             <b-navbar-item tag="router-link" :to="{ name: 'pets' }">
                 <b-icon
-                    icon="map-search"
+                    icon="magnify"
                     size="is-small">
                 </b-icon>
-                Pets
-            </b-navbar-item>
-            <b-navbar-item href="#">
-                <b-icon
-                    icon="alarm-light-outline"
-                    size="is-small">
-                </b-icon>
-                Bad Actor
+                {{ $t("pets") }}
             </b-navbar-item>
             <b-navbar-item tag="router-link" :to="{ name: 'about' }">
                 <b-icon
-                    icon="information-outline"
+                    icon="star-outline"
                     size="is-small">
                 </b-icon>
-                About
+                {{ $t("about") }}
             </b-navbar-item>
         </template>
 
@@ -40,7 +33,7 @@
             <b-navbar-item tag="router-link" :to="{ name: 'add' }">
                 <a class="button is-primary">
                     <b-icon icon="tooltip-plus-outline"></b-icon>
-                    <strong>Report Pet</strong>
+                    <strong>{{ $t("reportPet") }}</strong>
                 </a>
             </b-navbar-item>
         </template>
@@ -50,3 +43,18 @@
 <script>
 export default {};
 </script>
+
+<i18n>
+{
+  "en": {
+    "pets": "Pets",
+    "about": "About",
+    "reportPet": "Report Pet"
+  },
+  "es": {
+    "pets": "Mascotas",
+    "about": "Acerca",
+    "reportPet": "Reportar"
+  }
+}
+</i18n>

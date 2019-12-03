@@ -1,14 +1,15 @@
 <template>
     <section>
     <NavBar/>
+    <section class="animated fadeIn">
       <section class="hero is-primary">
         <div class="hero-body">
           <div class="container">
             <h1 class="title">
-              Reported Pets
+              {{ $t("title") }}
             </h1>
             <h2 class="subtitle">
-              Search for your pet
+              {{ $t("subtitle") }}
             </h2>
           </div>
         </div>
@@ -17,31 +18,31 @@
       <br>
       <div class="container">
         <h1 class="title">
-          Last reported...
+          {{ $t("lastReported") }}
         </h1>
         <div class="tile is-ancestor">
             <Pet v-for="pet in lastPets" :pet="pet" :key="pet.id"/>
         </div>
         <br>
         <h1 class="title">
-          Filtering...
+          {{ $t("search") }}
         </h1>
         <section>
           <b-tabs v-model="statusIndex"
           position="is-centered"
           type="is-boxed"
-          size="is-medium"
+          size="is-normal"
           expanded>
-              <b-tab-item label="Missing"
-              icon="google-photos"></b-tab-item>
-              <b-tab-item label="Found"
-              icon="library-music"></b-tab-item>
-              <b-tab-item label="Adoption"
-              icon="video"></b-tab-item>
-              <b-tab-item label="Adopted"
-              icon="video"></b-tab-item>
-              <b-tab-item label="Rescued"
-              icon="video"></b-tab-item>
+              <b-tab-item :label="$t('status.missing')"
+              icon="crosshairs-question"></b-tab-item>
+              <b-tab-item :label="$t('status.found')"
+              icon="crosshairs-gps"></b-tab-item>
+              <b-tab-item :label="$t('status.adoption')"
+              icon="star-circle-outline"></b-tab-item>
+              <b-tab-item :label="$t('status.adopted')"
+              icon="shield-star-outline"></b-tab-item>
+              <b-tab-item :label="$t('status.rescued')"
+              icon="ambulance"></b-tab-item>
           </b-tabs>
           <div class="block">
             <b-radio v-model="kind"
@@ -76,7 +77,8 @@
       </div>
       <br>
       <br>
-      <Footer/>
+      </section>
+    <Footer/>
     </section>
 </template>
 
@@ -105,32 +107,32 @@ export default {
       lastPets: [],
       lastPetsLimit: 3,
       filteredPets: [],
+      status: [
+        'missing',
+        'found',
+        'adoption',
+        'adopted',
+        'rescued',
+      ],
     };
   },
   watch: {
     statusIndex() {
       this.pagCurrent = 1;
       this.kind = 'Any';
-      this.getNextPets();
+      this.getPets();
     },
     kind() {
       this.pagCurrent = 1;
-      this.getNextPets();
+      this.getPets();
     },
     pagCurrent() {
-      this.getNextPets();
+      this.getPets();
     },
   },
   computed: {
     getStatus() {
-      const tabs = [
-        'Missing',
-        'Found',
-        'Adoption',
-        'Adopted',
-        'Rescued',
-      ];
-      return tabs[this.statusIndex];
+      return this.status[this.statusIndex];
     },
     getKind() {
       if (this.kind === 'Any') {
@@ -152,7 +154,7 @@ export default {
           this.loading = false;
         });
     },
-    getNextPets() {
+    getPets() {
       let skip = this.pagination * (this.pagCurrent - 1);
       if (skip < 0) {
         skip = 0;
@@ -177,7 +179,38 @@ export default {
   created() {
     this.getPetsStats();
     this.getLastPets();
-    this.getNextPets();
+    this.getPets();
   },
 };
 </script>
+
+<i18n>
+{
+  "en": {
+    "title": "Reported Pets",
+    "subtitle": "Search for your pet",
+    "lastReported": "Last reported...",
+    "search": "Search...",
+    "status": {
+      "missing": "Missing",
+      "found": "Found",
+      "adoption": "Adoption",
+      "adopted": "Adopted",
+      "rescued": "Rescued"
+    }
+  },
+  "es": {
+    "title": "Mascotas Reportadas",
+    "subtitle": "Busca tu mascota",
+    "lastReported": "Ultimos reportes...",
+    "search": "Busqueda...",
+    "status": {
+      "missing": "Perdido",
+      "found": "Encontrado",
+      "adoption": "En adopcion",
+      "adopted": "Adoptado",
+      "rescued": "Rescatado"
+    }
+  }
+}
+</i18n>

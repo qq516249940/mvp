@@ -1,59 +1,78 @@
 <template>
     <section>
-        <NavBar/>
+      <NavBar/>
+      <section class="animated fadeIn">
+        <section class="hero is-primary">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title">
+                {{ $t("title") }}
+              </h1>
+              <h2 class="subtitle">
+                {{ $t("subtitle") }}
+              </h2>
+            </div>
+          </div>
+        </section>
         <div class="container" id="add-pet-form">
+            <div v-if="newPet" class="columns is-mobile animated fadeIn">
+              <div class="column is-half is-offset-one-quarter">
+                <Pet :pet="newPet" />
+              </div>
+              <br>
+              <br>
+            </div>
             <section class="animated fadeIn">
-                <form @submit="addPet">
-                  <b-field label="Kind">
-                      <b-select v-model="pet.kind" placeholder="Select a subject" required>
-                          <option value="Dog">Dog</option>
-                          <option value="Cat">Cat</option>
-                      </b-select>
-                  </b-field>
+              <div class="columns is-mobile">
+                <div class="column is-three-fifths is-offset-one-fifth">
+                  <form @submit="addPet">
+                    <b-field :label="$t('kind')">
+                        <b-select v-model="pet.kind" :placeholder="$t('select')" required>
+                            <option v-for="(_, kind) in kinds" :value="kind" v-bind:key="kind">
+                              {{ $t('pet.kind.' + kind) }}
+                            </option>
+                        </b-select>
+                    </b-field>
 
-                  <b-field label="Status">
-                      <b-select v-model="pet.status" placeholder="Select a subject" required>
-                          <option value="Missing">Missing</option>
-                          <option value="Found">Found</option>
-                          <option value="For Adoption">For Adoption</option>
-                          <option value="Adopted">Adopted</option>
-                          <option value="Rescued">Rescued</option>
-                      </b-select>
-                  </b-field>
+                    <b-field :label="$t('status')">
+                        <b-select v-model="pet.status" :placeholder="$t('select')" required>
+                            <option v-for="(_, sts) in status" :value="sts" v-bind:key="sts">
+                             {{ $t('pet.status.' + sts) }}
+                            </option>
+                        </b-select>
+                    </b-field>
 
-                  <b-field label="Location">
-                      <b-input
-                      v-model="pet.location"
-                      placeholder="Address..."
-                      required></b-input>
-                  </b-field>
+                    <b-field :label="$t('location')">
+                        <b-input
+                        v-model="pet.location"
+                        :placeholder="$t('locationPlaceHolder')"
+                        required></b-input>
+                    </b-field>
 
-                  <b-field label="Name">
-                      <b-input v-model="pet.name" placeholder="Optional"></b-input>
-                  </b-field>
+                    <b-field :label="$t('name')">
+                        <b-input v-model="pet.name" :placeholder="$t('namePlaceHolder')"></b-input>
+                    </b-field>
 
-                  <b-field label="Story">
-                      <b-input v-model="pet.story"
-                      placeholder="Tell us what has append to this pet..."
-                      type="textarea"
-                      required></b-input>
-                  </b-field>
+                    <b-field :label="$t('story')">
+                        <b-input v-model="pet.story"
+                        :placeholder="$t('storyPlaceHolder')"
+                        type="textarea"
+                        required></b-input>
+                    </b-field>
 
-                  <b-button
-                  type="is-primary"
-                  native-type="submit"
-                  outlined>Report Pet</b-button>
-                </form>
+                    <b-button
+                    type="is-primary"
+                    native-type="submit"
+                    outlined>{{ $t("submit") }}</b-button>
+                  </form>
+                </div>
+              </div>
             </section>
         </div>
         <br>
         <br>
-        <div  class="columns is-mobile">
-          <div class="column is-half is-offset-one-quarter">
-            <Pet v-if="newPet" :pet="newPet" />
-          </div>
-        </div>
         <Footer/>
+      </section>
     </section>
 </template>
 
@@ -71,11 +90,22 @@ export default {
       loading: false,
       newPet: {},
       pet: {
-        kind: '',
-        status: '',
-        location: '',
-        name: '',
-        story: '',
+        kind: null,
+        status: null,
+        location: null,
+        name: null,
+        story: null,
+      },
+      kinds: {
+        dog: 'Dog',
+        cat: 'Cat',
+      },
+      status: {
+        missing: 'Missing',
+        found: 'Found',
+        adoption: 'Adoption',
+        adopted: 'Adopted',
+        rescued: 'Rescued',
       },
     };
   },
@@ -95,7 +125,7 @@ export default {
             story: '',
           };
           this.newPet = resp.data;
-          this.$buefy.dialog.alert('This pet has been added');
+          this.$buefy.dialog.alert(this.$t('confirmation'));
         })
         .catch((error) => {
           console.log(error);
@@ -119,3 +149,94 @@ export default {
     margin-bottom: 40px;
   }
 </style>
+
+<i18n>
+{
+  "en": {
+    "title": "Report a Pet",
+    "subtitle": "Add a pet",
+    "select": "Select one",
+    "kind": "Kind",
+    "status": "Status",
+    "location": "Location",
+    "locationPlaceHolder": "Address",
+    "name": "Name",
+    "namePlaceHolder": "Optional",
+    "story": "Story",
+    "storyPlaceHolder": "Tell us what append to this pet, include all useful details...",
+    "submit": "Report",
+    "pet": {
+      "kind": {
+        "dog": "Dog",
+        "cat": "Cat"
+      },
+      "status": {
+        "missing": "Missing",
+        "found": "Found",
+        "adoption": "Adoption",
+        "adopted": "Adopted",
+        "rescued": "Rescued"
+      },
+      "story": "Story",
+      "name": "Name",
+      "location": "Location",
+      "states": {
+        "injured": "Injured",
+        "underfed": "Underfed",
+        "critical": "Critical",
+        "bad": "Bad",
+        "good": "Good",
+        "healthy": "Healthy"
+      },
+      "picture": "Picture",
+      "in_temp_house": "In temporal house",
+      "created_at": "Created",
+      "last_modified": "Updated"
+    },
+    "confirmation": "Thank you, this pet has been added."
+  },
+  "es": {
+    "title": "Reportar una Mascota",
+    "subtitle": "Agregar mascota",
+    "select": "Selecionar",
+    "kind": "Tipo",
+    "status": "Estado",
+    "location": "Locacion",
+    "locationPlaceHolder": "Direccion o referencias",
+    "name": "Nombre",
+    "namePlaceHolder": "Opcional",
+    "story": "Historia",
+    "storyPlaceHolder": "Cuentanos que paso con esta mascota, incluye todos los detalles utiles.",
+    "submit": "Report",
+    "pet": {
+      "kind": {
+        "dog": "Perro",
+        "cat": "Gato"
+      },
+      "status": {
+        "missing": "Perdido",
+        "found": "Encontrado",
+        "adoption": "En adopcion",
+        "adopted": "Adoptado",
+        "rescued": "Rescatado"
+      },
+      "story": "History",
+      "name": "Nombre",
+      "location": "Locacion",
+      "states": {
+        "injured": "Lastimado",
+        "underfed": "Desnutrido",
+        "critical": "Critico",
+        "bad": "Malo",
+        "good": "Bueno",
+        "healthy": "Sano"
+      },
+      "picture": "Foto",
+      "in_temp_house": "En casa temporal",
+      "created_at": "Agregado",
+      "last_modified": "Actualizado"
+    },
+    "confirmation": "Gracias, esta mascota has been added."
+  }
+}
+</i18n>
